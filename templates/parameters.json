@@ -6,37 +6,13 @@
             "value": "bfa5a4b9-6992-4ebd-a737-d73392fe7dba"
         },
         "name": {
-            "value": "alexeirazorewebapp"
-        },
-        "location": {
-            "value": "France Central"
-        },
-        "hostingPlanName": {
-            "value": "ASP-alexeirg-a3c4"
-        },
-        "serverFarmResourceGroup": {
-            "value": "alexeirg"
+            "value": "alexeirazorwebapp"
         },
         "alwaysOn": {
             "value": false
         },
         "ftpsState": {
             "value": "FtpsOnly"
-        },
-        "sku": {
-            "value": "Free"
-        },
-        "skuCode": {
-            "value": "F1"
-        },
-        "workerSize": {
-            "value": "0"
-        },
-        "workerSizeId": {
-            "value": "0"
-        },
-        "numberOfWorkers": {
-            "value": "1"
         },
         "currentStack": {
             "value": "dotnet"

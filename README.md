@@ -14,4 +14,12 @@ ASP.NET Core is the web side of .NET Core development, in which Razor Pages, MVC
 <img src="/pictures/address_form.png" title="address form"  width="400">
 
 
+### Publish
+
+<img src="/pictures/publish.png" title="publish"  width="800">
+<img src="/pictures/publish2.png" title="publish"  width="800">
+<img src="/pictures/publish3.png" title="publish"  width="800">
+<img src="/pictures/publish4.png" title="publish"  width="800">
+
+
 

@@ -8,34 +8,10 @@
         "name": {
             "type": "String"
         },
-        "location": {
-            "type": "String"
-        },
-        "hostingPlanName": {
-            "type": "String"
-        },
-        "serverFarmResourceGroup": {
-            "type": "String"
-        },
         "alwaysOn": {
             "type": "Bool"
         },
         "ftpsState": {
-            "type": "String"
-        },
-        "sku": {
-            "type": "String"
-        },
-        "skuCode": {
-            "type": "String"
-        },
-        "workerSize": {
-            "type": "String"
-        },
-        "workerSizeId": {
-            "type": "String"
-        },
-        "numberOfWorkers": {
             "type": "String"
         },
         "currentStack": {
@@ -54,14 +30,31 @@
             "type": "Microsoft.Web/sites",
             "apiVersion": "2018-11-01",
             "name": "[parameters('name')]",
-            "location": "[parameters('location')]",
+            "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[concat('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
+                "microsoft.insights/components/alexeirazorwebapp"
             ],
             "properties": {
                 "name": "[parameters('name')]",
                 "siteConfig": {
-                    "appSettings": [],
+                    "appSettings": [
+                        {
+                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                            "value": "[reference('microsoft.insights/components/alexeirazorwebapp', '2015-05-01').InstrumentationKey]"
+                        },
+                        {
+                            "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+                            "value": "[reference('microsoft.insights/components/alexeirazorwebapp', '2015-05-01').ConnectionString]"
+                        },
+                        {
+                            "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
+                            "value": "~2"
+                        },
+                        {
+                            "name": "XDT_MicrosoftApplicationInsights_Mode",
+                            "value": "default"
+                        }
+                    ],
                     "metadata": [
                         {
                             "name": "CURRENT_STACK",
@@ -73,30 +66,48 @@
                     "alwaysOn": "[parameters('alwaysOn')]",
                     "ftpsState": "[parameters('ftpsState')]"
                 },
-                "serverFarmId": "[concat('/subscriptions/', parameters('subscriptionId'),'/resourcegroups/', parameters('serverFarmResourceGroup'), '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
                 "clientAffinityEnabled": true,
                 "virtualNetworkSubnetId": null,
                 "httpsOnly": true
             }
         },
         {
-            "type": "Microsoft.Web/serverfarms",
-            "apiVersion": "2018-11-01",
-            "name": "[parameters('hostingPlanName')]",
-            "location": "[parameters('location')]",
-            "dependsOn": [],
-            "sku": {
-                "Tier": "[parameters('sku')]",
-                "Name": "[parameters('skuCode')]"
-            },
-            "kind": "",
+            "type": "microsoft.insights/components",
+            "apiVersion": "2020-02-02-preview",
+            "name": "alexeirazorwebapp",
+            "location": "francecentral",
+            "dependsOn": [
+                "newWorkspaceTemplate"
+            ],
             "properties": {
-                "name": "[parameters('hostingPlanName')]",
-                "workerSize": "[parameters('workerSize')]",
-                "workerSizeId": "[parameters('workerSizeId')]",
-                "numberOfWorkers": "[parameters('numberOfWorkers')]",
-                "zoneRedundant": false
+                "ApplicationId": "[parameters('name')]",
+                "Application_Type": "web"
             }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-05-01",
+            "name": "newWorkspaceTemplate",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "variables": {},
+                    "resources": [
+                        {
+                            "apiVersion": "2015-11-01-preview",
+                            "name": "DefaultWorkspace-bfa5a4b9-6992-4ebd-a737-d73392fe7dba-PAR",
+                            "type": "Microsoft.OperationalInsights/workspaces",
+                            "location": "France Central",
+                            "properties": {}
+                        }
+                    ]
+                }
+            },
+            "subscriptionId": "[parameters('subscriptionId')]",
+            "resourceGroup": "[resourceGroup().name]"
         }
     ]
 }
