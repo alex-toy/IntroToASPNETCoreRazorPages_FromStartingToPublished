@@ -12,12 +12,20 @@ namespace RazorPagesUI.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
+        [BindProperty(SupportsGet = true)]
+        public string FirstName { get; set; }
+
         public IndexModel(ILogger<IndexModel> logger)
         {
             _logger = logger;
         }
 
         public void OnGet()
+        {
+
+        }
+
+        public void OnPost()
         {
 
         }
