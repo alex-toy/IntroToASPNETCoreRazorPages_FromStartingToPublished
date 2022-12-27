@@ -13,7 +13,7 @@ namespace RazorPagesUI.Pages
         private readonly ILogger<IndexModel> _logger;
 
         [BindProperty(SupportsGet = true)]
-        public string FirstName { get; set; }
+        public string City { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger)
         {
@@ -22,7 +22,10 @@ namespace RazorPagesUI.Pages
 
         public void OnGet()
         {
-
+            if (string.IsNullOrEmpty(City))
+            {
+                City = "the city";
+            }
         }
 
         public void OnPost()
